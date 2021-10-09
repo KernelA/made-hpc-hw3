@@ -1,0 +1,23 @@
+Test matrices (ordinary algorithm)
+Size: 500 Time elapsed: 0.179403 s
+Size: 512 Time elapsed: 0.194405 s
+Size: 1000 Time elapsed: 1.54301 s
+Size: 1024 Time elapsed: 1.61389 s
+Size: 2000 Time elapsed: 12.4386 s
+Size: 2048 Time elapsed: 12.9122 s
+
+Test vectors
+Size: 500 Time elapsed: 0.0010303 s
+Size: 512 Time elapsed: 0.0011848 s
+Size: 1000 Time elapsed: 0.0053414 s
+Size: 1024 Time elapsed: 0.0093549 s
+Size: 2000 Time elapsed: 0.0363516 s
+Size: 2048 Time elapsed: 0.058198 s
+
+Test matrices with (strassen algorithm)
+Size: 500 Time elapsed: 0.146982 s
+Size: 512 Time elapsed: 0.147821 s
+Size: 1000 Time elapsed: 1.02674 s
+Size: 1024 Time elapsed: 1.13848 s
+Size: 2000 Time elapsed: 7.44385 s
+Size: 2048 Time elapsed: 7.35564 s

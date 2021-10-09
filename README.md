@@ -1,23 +1,54 @@
-# matrix-mul
+# HW 2 умножение матриц и написание bash скриптов
 
-## Description
+## Требования для запуска
 
+1. CMake 3.17 или выше.
+2. Компилятор с поддержкой C++17.
+3. Установленный BLAS.
+4. ОС на основе UNIX.
+5. Docker 19.04 или выше.
 
-## Requirements
+## Задания
 
-1. CMake 3.17 or higher.
-2. Compiler with support C++17.
+### Исходный код проекта по перемножению матриц
 
-## How to run
+Реализована два алгоритма: обычный и алгоритм Штрассена.
 
-Create new directory `build`.
+[См. matrix-mul (используется CMake вместо Makefile)](matrix-mul)
 
+### Замеры времени
+
+[При запуске в ОС](reports/native_os_test.txt)
+
+[При запуске в Docker](reports/docker_test.txt)
+
+### Скрипты для bash
+
+[См. scripts](scripts/scripts.sh)
+
+### LINPACK тест
+
+[Отчёт по запуску LINPACK теста от Intel](reports/linpack.txt)
+
+[Была использована реализация теста от Intel](https://software.intel.com/content/www/us/en/develop/articles/intel-mkl-benchmarks-suite.html)
+
+## Как запустить
+
+Создать директорию: `build`.
 ```
 mkdir build
-cmake -S . -B .\build
+cmake -S . -B ./build
 ```
 
-Run CMake:
+Выполнить CMake:
+```bash
+cmake --build ./build --config Release --parallel $(nproc) --target all
 ```
-cmake --build .\build --config Release -j 4 --target <input_target>
+
+После успешной сборки проекта:
+```bash
+docker build -t mult .
+docker run mult
 ```
+
+**Полна переносимость программы внутри контейнера не гарантируется при сборке на разных ОС**

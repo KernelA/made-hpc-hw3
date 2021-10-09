@@ -36,3 +36,7 @@ jobs:
           CTEST_PARALLEL_LEVEL: 2
         working-directory: ${{ github.workspace }}/build
         run: ctest
+
+      - name: Run program
+        working-directory: ${{ github.workspace }}/build/matrix-mul
+        run: ./matrix-mul

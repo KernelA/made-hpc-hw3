@@ -11,23 +11,18 @@ int main(int argc, char** argv) {
   using std::endl;
   using namespace linalg;
 
-  if (argc != 2 && argc != 5) {
+  if (argc != 2) {
     cerr << "Please specify matrix size" << endl;
     return 1;
   }
 
-  size_t a_rows{}, a_columns{}, b_rows{}, b_columns{};
+  size_t matrix_size{};
 
   if (argc == 2) {
-    a_rows = a_columns = b_rows = b_columns = std::stoi(argv[1]);
-  } else {
-    a_rows = std::stoi(argv[1]);
-    a_columns = std::stoi(argv[2]);
-    b_rows = std::stoi(argv[3]);
-    b_columns = std::stoi(argv[4]);
+    matrix_size = std::stoi(argv[1]);
   }
 
-  Matrix a(a_rows, a_columns), b(b_rows, b_columns);
+  Matrix a(matrix_size), b(matrix_size);
 
   Matrix c(a.rowCount(), b.columnCount());
 
@@ -39,7 +34,7 @@ int main(int argc, char** argv) {
               a.columnCount(), b.getRawData(), b.columnCount(), 0.0,
               c.getRawData(), c.columnCount());
 
-  Matrix d = a * b;
+  Matrix d = multiplyStrassen(a, b, 16);
 
   assert(c == d);
 

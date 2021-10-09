@@ -14,3 +14,8 @@ void linalg::fill_matrix(Matrix& a, double min_value, double max_value) {
     }
   }
 }
+
+size_t linalg::nextPowerOfTwo(size_t n) {
+  size_t power_of_two = static_cast<int>(ceil(log2(n)));
+  return 1 << power_of_two;
+}

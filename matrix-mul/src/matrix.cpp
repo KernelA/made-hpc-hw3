@@ -1,5 +1,7 @@
 #include "matrix.h"
 
+#include "utils.h"
+
 using namespace linalg;
 
 void Matrix::fill(double fill_value) {
@@ -54,6 +56,36 @@ Matrix& Matrix::operator*=(const Matrix& a) {
   }
 
   return *this;
+}
+
+Matrix& Matrix::operator+=(const Matrix& a) {
+  checkShapeEquality(a);
+
+  for (size_t i{}; i < elements.size(); ++i) {
+    elements[i] += a.elements[i];
+  }
+
+  return *this;
+}
+
+Matrix& Matrix::operator-=(const Matrix& a) {
+  checkShapeEquality(a);
+
+  for (size_t i{}; i < elements.size(); ++i) {
+    elements[i] -= a.elements[i];
+  }
+
+  return *this;
+}
+
+Matrix Matrix::operator+(const Matrix& other) const {
+  Matrix sum(*this);
+  return sum += other;
+}
+
+Matrix Matrix::operator-(const Matrix& other) const {
+  Matrix sum(*this);
+  return sum -= other;
 }
 
 Matrix Matrix::operator*(const Matrix& a) const {
@@ -126,4 +158,98 @@ std::istream& linalg::operator>>(std::istream& input, Matrix& matrix) {
   }
 
   return input;
+}
+
+Matrix linalg::multiplyStrassenR(const Matrix& a, const Matrix& b,
+                                 size_t baseBlockSize) {
+  if (a.rowCount() <= baseBlockSize) {
+    return a * b;
+  }
+
+  size_t newBlockSize = a.rowCount() / 2;
+
+  Matrix a11(newBlockSize), a12(newBlockSize), a21(newBlockSize),
+      a22(newBlockSize), b11(newBlockSize), b12(newBlockSize),
+      b21(newBlockSize), b22(newBlockSize);
+
+  for (size_t row{}; row < newBlockSize; ++row) {
+    for (size_t col{}; col < newBlockSize; ++col) {
+      a11.set(row, col, a.get(row, col));
+      a12.set(row, col, a.get(row, col + newBlockSize));
+      a21.set(row, col, a.get(row + newBlockSize, col));
+      a22.set(row, col, a.get(row + newBlockSize, col + newBlockSize));
+
+      b11.set(row, col, b.get(row, col));
+      b12.set(row, col, b.get(row, col + newBlockSize));
+      b21.set(row, col, b.get(row + newBlockSize, col));
+      b22.set(row, col, b.get(row + newBlockSize, col + newBlockSize));
+    }
+  }
+
+  Matrix p1 = multiplyStrassenR(a11 + a22, b11 + b22, baseBlockSize);
+  Matrix p2 = multiplyStrassenR(a21 + a22, b11, baseBlockSize);
+  Matrix p3 = multiplyStrassenR(a11, b12 - b22, baseBlockSize);
+  Matrix p4 = multiplyStrassenR(a22, b21 - b11, baseBlockSize);
+  Matrix p5 = multiplyStrassenR(a11 + a12, b22, baseBlockSize);
+  Matrix p6 = multiplyStrassenR(a21 - a11, b11 + b12, baseBlockSize);
+  Matrix p7 = multiplyStrassenR(a12 - a22, b21 + b22, baseBlockSize);
+
+  Matrix c11{p1 + p4 - p5 + p7};
+  Matrix c12{p3 + p5};
+  Matrix c21{p2 + p4};
+  Matrix c22{p1 - p2 + p3 + p6};
+
+  Matrix c(a.rowCount());
+
+  for (size_t row{}; row < newBlockSize; ++row) {
+    for (size_t col{}; col < newBlockSize; ++col) {
+      c.set(row, col, c11.get(row, col));
+      c.set(row, col + newBlockSize, c12.get(row, col));
+      c.set(row + newBlockSize, col, c21.get(row, col));
+      c.set(row + newBlockSize, col + newBlockSize, c22.get(row, col));
+    }
+  }
+
+  return c;
+}
+
+Matrix linalg::multiplyStrassen(const Matrix& a, const Matrix& b,
+                                size_t baseBlockSize) {
+  if (a.rowCount() != a.columnCount() || b.rowCount() != b.columnCount() ||
+      a.columnCount() != b.rowCount()) {
+    throw std::invalid_argument("Expected square matrix");
+  }
+
+  size_t matrix_size = a.rowCount();
+  size_t new_size = linalg::nextPowerOfTwo(matrix_size);
+
+  Matrix aligned_a(new_size), aligned_b(new_size);
+
+  for (size_t row{}; row < a.rowCount(); ++row) {
+    for (size_t col{}; col < a.columnCount(); ++col) {
+      aligned_a.set(row, col, a.get(row, col));
+      aligned_b.set(row, col, b.get(row, col));
+    }
+  }
+
+  for (size_t row{a.rowCount()}; row < aligned_a.rowCount(); ++row) {
+    aligned_a.set(row, row, 1);
+    aligned_b.set(row, row, 1);
+  }
+
+  Matrix product{multiplyStrassenR(aligned_a, aligned_b, baseBlockSize)};
+
+  if (matrix_size == new_size) {
+    return product;
+  } else {
+    Matrix res(new_size);
+
+    for (size_t row{}; row < a.rowCount(); ++row) {
+      for (size_t col{}; col < a.columnCount(); ++col) {
+        res.set(row, col, product.get(row, col));
+      }
+    }
+
+    return res;
+  }
 }

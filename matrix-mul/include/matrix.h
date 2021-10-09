@@ -6,7 +6,6 @@ namespace linalg {
 
 const double EPS = 1e-6;
 
-class OutOfBoundsException : public std::exception {};
 class SizeMismatchException : public std::exception {};
 
 class Matrix {
@@ -20,12 +19,22 @@ class Matrix {
   Matrix& operator=(const Matrix& a) = default;
 
   double& get(size_t row, size_t col);
+
   const double& get(size_t row, size_t col) const;
+
   void set(size_t row, size_t col, const double& value);
 
   Matrix& operator*=(const Matrix& a);
 
   Matrix operator*(const Matrix& a) const;
+
+  Matrix& operator+=(const Matrix& a);
+
+  Matrix operator-(const Matrix& other) const;
+
+  Matrix operator+(const Matrix& other) const;
+
+  Matrix& operator-=(const Matrix& a);
 
   bool operator==(const Matrix& a) const;
   bool operator!=(const Matrix& a) const;
@@ -58,6 +67,12 @@ class Matrix {
 };
 
 std::ostream& operator<<(std::ostream& output, const Matrix& matrix);
+
 std::istream& operator>>(std::istream& input, Matrix& matrix);
+
+Matrix multiplyStrassen(const Matrix& a, const Matrix& b, size_t baseBlockSize);
+
+Matrix multiplyStrassenR(const Matrix& a, const Matrix& b,
+                         size_t baseBlockSize);
 
 }  // namespace linalg

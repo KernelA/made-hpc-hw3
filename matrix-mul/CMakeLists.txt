@@ -30,4 +30,12 @@ target_precompile_headers(${TEST_PROJECT_NAME} PRIVATE ${_include_dir}/stdafx.h)
 unset(_include_dir)
 target_link_libraries(${TEST_PROJECT_NAME} PRIVATE BLAS::BLAS)
 
-add_test(test_multiply ${TEST_PROJECT_NAME})
+add_test(test_multiply_square_1 ${TEST_PROJECT_NAME} "256")
+add_test(test_multiply_square_2 ${TEST_PROJECT_NAME} "128")
+add_test(test_multiply_rectangle_1 ${TEST_PROJECT_NAME} "64" "32" "32" "12")
+add_test(test_multiply_rectangle_2 ${TEST_PROJECT_NAME} "28" "11" "11" "4")
+add_test(test_multiply_rectangle_2 ${TEST_PROJECT_NAME} "28" "20" "20" "2")
+add_test(test_multiply_matrix_vector_1 ${TEST_PROJECT_NAME} "28" "11" "11" "1")
+add_test(test_multiply_matrix_vector_2 ${TEST_PROJECT_NAME} "28" "20" "20" "1")
+
+

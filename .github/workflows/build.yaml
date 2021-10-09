@@ -38,5 +38,6 @@ jobs:
         run: ctest
 
       - name: Run program
+        if: ${{ github.event_name == 'pull_request' }}
         working-directory: ${{ github.workspace }}/build/matrix-mul
         run: ./matrix-mul

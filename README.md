@@ -1,0 +1,23 @@
+# matrix-mul
+
+## Description
+
+
+## Requirements
+
+1. CMake 3.17 or higher.
+2. Compiler with support C++17.
+
+## How to run
+
+Create new directory `build`.
+
+```
+mkdir build
+cmake -S . -B .\build
+```
+
+Run CMake:
+```
+cmake --build .\build --config Release -j 4 --target <input_target>
+```

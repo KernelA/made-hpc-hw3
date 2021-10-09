@@ -26,6 +26,8 @@
 
 [См. scripts](scripts/scripts.sh)
 
+Результаты выполнения можно [посмотреть в GitHub Actions, в секции Test scripts](https://github.com/KernelA/made-hpc-hw2/actions/workflows/build.yaml)
+
 ### LINPACK тест
 
 [Отчёт по запуску LINPACK теста от Intel](reports/linpack.txt)

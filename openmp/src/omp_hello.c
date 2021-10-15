@@ -4,8 +4,8 @@
 
 int main(int argc, char* argv[]) {
   /* Uncomment the code below to manually set the number of threads */
-  // omp_set_dynamic(0);
-  // omp_set_num_threads(5);
+  omp_set_dynamic(0);
+  omp_set_num_threads(5);
 
   int nthreads, tid;
 

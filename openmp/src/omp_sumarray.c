@@ -2,27 +2,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char ** argv)
-{
-    const size_t N = 10000;
+int main(int argc, char** argv) {
+  const size_t N = 10000;
 
-    int a[N];
+  int a[N];
 
 #pragma omp parallel for
-    for (int i = 0; i < N; ++i)
-    {
-        a[i] = i;
-    }
+  for (int i = 0; i < N; ++i) {
+    a[i] = i;
+  }
 
-    int sum = 0;
+  int sum = 0;
 
-#pragma omp parallel for reduction(+: sum)
-    for (int i = 0; i < N; ++i)
-    {
-        sum += a[i];
-    }
+#pragma omp parallel for reduction(+ : sum)
+  for (int i = 0; i < N; ++i) {
+    sum += a[i];
+  }
 
-    printf("sum = %d\n", sum);
+  printf("sum = %d\n", sum);
 
-    return 0;
+  return 0;
 }

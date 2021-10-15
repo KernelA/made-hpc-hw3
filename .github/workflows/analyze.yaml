@@ -22,12 +22,12 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
-        languages: cpp
+        languages: cpp, c
 
-    - name: Install BLAS
+    - name: Install OpenMP
       run: |
           sudo apt update
-          sudo apt install -y libblas-dev
+          sudo apt install -y libomp-dev
 
     - name: "CMake Build"
       uses: lukka/run-cmake@v3

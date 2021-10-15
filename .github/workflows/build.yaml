@@ -14,14 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Test scripts
-        working-directory: ./scripts
-        run: bash ./scripts.sh
-
-      - name: Install BLAS
+      - name: Install OpenMP
         run: |
           sudo apt update
-          sudo apt install -y libblas-dev
+          sudo apt install -y libomp-dev
 
       - name: "CMake Build"
         uses: lukka/run-cmake@v3
@@ -31,13 +27,3 @@ jobs:
           cmakeListsTxtPath: "${{ github.workspace }}/CMakeLists.txt"
           cmakeAppendedArgs: "-GNinja -DCMAKE_BUILD_TYPE=Release --parallel $(nproc)"
       
-      - name: "Run tests"
-        env:
-          CTEST_PARALLEL_LEVEL: 2
-        working-directory: ${{ github.workspace }}/build
-        run: ctest
-
-      - name: Run program
-        if: ${{ github.event_name == 'pull_request' }}
-        working-directory: ${{ github.workspace }}/build/matrix-mul
-        run: ./matrix-mul

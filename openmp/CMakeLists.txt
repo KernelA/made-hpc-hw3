@@ -5,7 +5,7 @@ set(_include_dir ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 file(GLOB_RECURSE _headers RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${_include_dir}/*.h*)
 
-set(POSTFIX "hello;parsec;privateshared;sumarray")
+set(POSTFIX "hello;parsec;privateshared;sumarray;bugreduction;bugparfoc")
 
 foreach(name ${POSTFIX})
     message(STATUS "Add target for: ${name}")

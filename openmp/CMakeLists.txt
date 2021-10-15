@@ -22,3 +22,6 @@ target_compile_features(outmes PRIVATE cxx_std_17)
 target_link_libraries(outmes PRIVATE OpenMP::OpenMP_CXX)
 
 unset(_include_dir)
+
+add_test(check_bugreduction bugreduction)
+add_test(check_bugparfoc bugparfoc)

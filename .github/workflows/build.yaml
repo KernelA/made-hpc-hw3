@@ -26,4 +26,10 @@ jobs:
           buildDirectory: "${{ github.workspace }}/build"
           cmakeListsTxtPath: "${{ github.workspace }}/CMakeLists.txt"
           cmakeAppendedArgs: "-GNinja -DCMAKE_BUILD_TYPE=Release --parallel $(nproc)"
+
+      - name: "Run tests"
+        env:
+          CTEST_PARALLEL_LEVEL: 2
+        working-directory: ${{ github.workspace }}/build
+        run: ctest
       

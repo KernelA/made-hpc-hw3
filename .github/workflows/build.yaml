@@ -3,8 +3,14 @@ name: autobuild
 on:
   push:
     branches: [master, develop]
+    paths:
+      - 'openmp/**'
+      - 'CMakeLists.txt'
   pull_request:
     branches: [master, develop]
+    paths:
+      - 'openmp/**'
+      - 'CMakeLists.txt'
   workflow_dispatch:
 
 jobs:
@@ -26,4 +32,10 @@ jobs:
           buildDirectory: "${{ github.workspace }}/build"
           cmakeListsTxtPath: "${{ github.workspace }}/CMakeLists.txt"
           cmakeAppendedArgs: "-GNinja -DCMAKE_BUILD_TYPE=Release --parallel $(nproc)"
+
+      - name: "Run tests"
+        env:
+          CTEST_PARALLEL_LEVEL: 2
+        working-directory: ${{ github.workspace }}/build
+        run: ctest
       

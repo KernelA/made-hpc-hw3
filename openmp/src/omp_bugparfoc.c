@@ -13,14 +13,22 @@ int main(int argc, char* argv[]) {
     a[i] = b[i] = (float)i;
   }
 
-#pragma omp parallel shared(a, b, c, chunk) private(i, tid) \
-    schedule(static, chunk)
+#pragma omp parallel shared(a, b, c, N, chunk) private(i, tid) default(none)
   {
     tid = omp_get_thread_num();
 
+#pragma omp for schedule(static, chunk)
     for (i = 0; i < N; ++i) {
       c[i] = a[i] + b[i];
+#pragma omp critical
       printf("tid = %d, c[%d] = %f\n", tid, i, c[i]);
+    }
+  }
+
+  for (i = 0; i < N; ++i) {
+    if (c[i] != a[i] + b[i]) {
+      printf("Error in computation at %d. %f != %f + %f", i, c[i], a[i], b[i]);
+      return 1;
     }
   }
 

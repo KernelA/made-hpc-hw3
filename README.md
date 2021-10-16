@@ -1,38 +1,26 @@
-# HW 2 умножение матриц и написание bash скриптов
+# HW 3 OpenMP
 
 ## Требования для запуска
 
 1. CMake 3.17 или выше.
 2. Компилятор с поддержкой C++17.
-3. Установленный BLAS.
-4. ОС на основе UNIX.
-5. Docker 19.04 или выше.
+3. Установленный OpenMP.
 
 ## Задания
 
-### Исходный код проекта по перемножению матриц
+### Демонстрационные файлы
 
-Реализована два алгоритма: обычный и алгоритм Штрассена.
+[CMake для сборки всех примеров](openmp/CMakeLists.txt)
 
-[См. matrix-mul (используется CMake вместо Makefile)](matrix-mul)
+### Программа с багами и их исправление
 
-### Замеры времени
+[Сравнение изменений в файлах после исправления ошибок](https://github.com/KernelA/made-hpc-hw3/compare/code-with-bugs...code-fixed?diff=split)
 
-[При запуске в ОС](reports/native_os_test.txt)
+Можно было бы не использовать `printf`, но это оставлено с добавлением `critical` для целей отладки.
 
-[При запуске в Docker](reports/docker_test.txt)
+[Тесты запускаются автоматически через GitHub Actions в стадии Run tests](https://github.com/KernelA/made-hpc-hw3/compare/code-with-bugs...code-fixed?diff=split)
 
-### Скрипты для bash
-
-[См. scripts](scripts/scripts.sh)
-
-Результаты выполнения можно [посмотреть в GitHub Actions, в секции Test scripts](https://github.com/KernelA/made-hpc-hw2/actions/workflows/build.yaml)
-
-### LINPACK тест
-
-[Отчёт по запуску LINPACK теста от Intel](reports/linpack.txt)
-
-[Была использована реализация теста от Intel](https://software.intel.com/content/www/us/en/develop/articles/intel-mkl-benchmarks-suite.html)
+[![autobuild](https://github.com/KernelA/made-hpc-hw3/actions/workflows/build.yaml/badge.svg?branch=master)](https://github.com/KernelA/made-hpc-hw3/actions/workflows/build.yaml)
 
 ## Как запустить
 
@@ -46,11 +34,3 @@ cmake -S . -B ./build
 ```bash
 cmake --build ./build --config Release --parallel $(nproc) --target all
 ```
-
-После успешной сборки проекта:
-```bash
-docker build -t mult .
-docker run mult
-```
-
-**Полна переносимость программы внутри контейнера не гарантируется при сборке на разных ОС**

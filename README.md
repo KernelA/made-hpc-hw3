@@ -22,6 +22,10 @@
 
 [![autobuild](https://github.com/KernelA/made-hpc-hw3/actions/workflows/build.yaml/badge.svg?branch=master)](https://github.com/KernelA/made-hpc-hw3/actions/workflows/build.yaml)
 
+### Метод Монте-Карло для оценки числа pi
+
+[Текст программы](openmp/src/omp_monte_carlo.cpp)
+
 ## Как запустить
 
 Создать директорию: `build`.

@@ -15,11 +15,17 @@ foreach(name ${POSTFIX})
     target_link_libraries(${name} PRIVATE OpenMP::OpenMP_C)
 endforeach()
 
-add_executable(outmes
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/omp_outmes.cpp)
-target_include_directories(outmes PRIVATE ${_include_dir})
-target_compile_features(outmes PRIVATE cxx_std_17)
-target_link_libraries(outmes PRIVATE OpenMP::OpenMP_CXX)
+
+set(CPP_CODE "outmes;monte_carlo")
+
+foreach(name ${CPP_CODE})
+    add_executable(${name}
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/omp_${name}.cpp)
+    target_include_directories(${name} PRIVATE ${_include_dir})
+    target_compile_features(${name} PRIVATE cxx_std_17)
+    target_link_libraries(${name} PRIVATE OpenMP::OpenMP_CXX)
+endforeach()
+
 
 unset(_include_dir)
 

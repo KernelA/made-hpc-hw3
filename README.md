@@ -26,6 +26,11 @@
 
 [Текст программы](openmp/src/omp_monte_carlo.cpp)
 
+Результат работы:
+```
+Monte carlo approximation of pi: 3.14099 abs tol: 0.000603454
+```
+
 ## Как запустить
 
 Создать директорию: `build`.
